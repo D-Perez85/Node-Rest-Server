@@ -13,11 +13,14 @@ const usersPut = (req, res = response)=>{
     })
 }
 const usersPost = (req, res=response)=>{
-    res.json({
-        ok:true,
-        msg: 'Post Success - Controller'    
-        })
-}
+    const {nombre, edad} = req.body; 
+        res.json({
+            ok:true,
+            msg: 'Post Success - Controller',
+            nombre, 
+            edad    
+            })
+        }
 const usersDelete = (req, res = response) => {
     res.json({
         ok: true,
