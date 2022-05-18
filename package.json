@@ -1,0 +1,19 @@
+{
+  "name": "04---restserver",
+  "version": "1.0.0",
+  "description": "\"Rest Server using NODE Js\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/D-Perez85/Node-Rest-Server.git"
+  },
+  "author": "D-Perez85",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/D-Perez85/Node-Rest-Server/issues"
+  },
+  "homepage": "https://github.com/D-Perez85/Node-Rest-Server#readme"
+}
