@@ -15,7 +15,28 @@ class Server {
     }
     routes() {
         this.app.get('/test', (req, res) => {
-            res.send('Hello Mundo')
+            res.json({
+            ok: true,
+            msg: 'Get Sucess'
+            }); 
+        })
+        this.app.put('/test', (req, res) => {
+            res.json({
+            ok: true,
+            msg: 'Put Sucess'
+            }); 
+        })
+        this.app.post('/test', (req, res) => {
+            res.json({
+            ok: true,
+            msg: 'Post Sucess'
+            }); 
+        })
+        this.app.delete('/test', (req, res) => {
+            res.json({
+            ok: true,
+            msg: 'Delete Sucess'
+            }); 
         })
     }
     listen() {
