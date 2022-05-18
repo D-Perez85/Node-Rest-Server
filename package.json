@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/D-Perez85/Node-Rest-Server/issues"
   },
-  "homepage": "https://github.com/D-Perez85/Node-Rest-Server#readme"
+  "homepage": "https://github.com/D-Perez85/Node-Rest-Server#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  }
 }
