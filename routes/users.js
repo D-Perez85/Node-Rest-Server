@@ -6,7 +6,7 @@ const { usersGet, usersPost, usersPut, usersDelete } = require('../controllers/u
 
 //Endpoints
 router.get('/', usersGet); 
-router.put('/', usersPut); 
+router.put('/:id', usersPut); 
 router.post('/', usersPost); 
 router.delete('/', usersDelete); 
 
