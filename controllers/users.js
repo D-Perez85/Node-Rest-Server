@@ -1,5 +1,5 @@
 const {response, request} = require('express')
-
+const User = require('../models/user'); 
 const usersGet = (req = request, res = response) => {
     const {nombre, apiKey, page= 7}  = req.query; 
         res.json({
@@ -18,21 +18,21 @@ const usersPut = (req, res = response)=>{
             id
         })
     }
-const usersPost = (req, res=response)=>{
-    const {nombre, edad} = req.body; 
-        res.json({
-            ok:true,
-            msg: 'Post Success - Controller',
-            nombre, 
-            edad    
-         })
-    }
+const usersPost = async (req, res=response)=>{
+    const body = req.body; 
+    const user = new User(body); ;
+    await user.save(); 
+            res.json({
+                ok:true,
+                user    
+            })
+        }
 const usersDelete = (req, res = response) => {
-    res.json({
-        ok: true,
-        msg: 'Delete Success - Controller'
-    })
-}
+        res.json({
+            ok: true,
+            msg: 'Delete Success - Controller'
+        })
+    }
 module.exports = { 
         usersGet, 
         usersPost,  
