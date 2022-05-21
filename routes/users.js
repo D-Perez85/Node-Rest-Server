@@ -4,7 +4,10 @@ const router = Router();
 
 //Controllers
 const { usersGet, usersPost, usersPut, usersDelete } = require('../controllers/users');
-const { validateFields } = require('../middlewares/validate-fields');
+const { validateFields,  } = require('../middlewares/validate-fields');
+
+//Helpers
+const { esRoleValid,emailExist} = require('../helpers/db-validators');
 
 //Endpoints
 router.get('/', usersGet); 
@@ -12,9 +15,10 @@ router.put('/:id', usersPut);
 
 router.post('/',[
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('password', 'El password debe de ser más de 6 letras').isLength({ min: 6 }),
+    check('password', 'El password debe contener 6 o más letras').isLength({ min: 6 }),
     check('correo', 'El correo no es válido').isEmail(),
-    check('rol', 'No es un rol válido').isIn(['ADMIN_ROLE','USER_ROLE']),
+    check('correo').custom(emailExist),
+    check('rol').custom(esRoleValid),
     validateFields
 ], usersPost); 
 
