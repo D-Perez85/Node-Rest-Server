@@ -42,10 +42,12 @@ const usersPost = async (req, res=response)=>{
                 user    
             })
     }
-const usersDelete = (req, res = response) => {
-        res.json({
-            ok: true,
-            msg: 'Delete Success - Controller'
-        })
+const usersDelete = async (req, res = response) => {
+        const {id} = req.params; 
+        //BAJA FISICA
+        // const user = await User.findByIdAndDelete(id); 
+        //BAJA LOGICA
+        const user = await User.findByIdAndUpdate( id, { estado: false } );
+        res.json( user)
     }
 module.exports = { usersGet, usersPost, usersPut, usersDelete}
