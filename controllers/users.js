@@ -1,16 +1,19 @@
 const {response, request} = require('express')
 const bcryptjs = require('bcryptjs');
 const User = require('../models/user'); 
-const { validationResult } = require('express-validator');
 
-const usersGet = (req = request, res = response) => {
-    const {nombre, apiKey, page= 7}  = req.query; 
+const usersGet = async (req = request, res = response) => {
+    const { limit = 5, desde = 13 } = req.query;
+    const query = { estado: true };
+    const [ total, users ] = await Promise.all([
+        User.countDocuments(query),
+        User.find(query)
+            .skip( Number( desde ) )
+            .limit(Number( limit ))
+    ]);    
         res.json({
-            ok: true, 
-            msg: 'Get Success - Controller',
-            nombre,
-            apiKey,
-            page //Si no viene data setea 7 por default
+            total,
+            users
         })
     }
 const usersPut = async (req, res = response)=>{
@@ -23,10 +26,7 @@ const usersPut = async (req, res = response)=>{
             rest.password = bcryptjs.hashSync( password, salt );
         }
     const user = await User.findByIdAndUpdate(id, rest, {new: true})
-        res.json({
-            ok: true,
-            user
-        })
+        res.json(user)
     }
 const usersPost = async (req, res=response)=>{
     const { nombre, correo, password, rol } = req.body;
