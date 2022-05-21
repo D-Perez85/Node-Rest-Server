@@ -13,19 +13,24 @@ const usersGet = (req = request, res = response) => {
             page //Si no viene data setea 7 por default
         })
     }
-const usersPut = (req, res = response)=>{
+const usersPut = async (req, res = response)=>{
     const {id} = req.params; 
+    const {_id, password, ...rest} = req.body; 
+
+        if(password){
+            // Encrypt of Password
+            const salt = bcryptjs.genSaltSync();
+            rest.password = bcryptjs.hashSync( password, salt );
+        }
+    const user = await User.findByIdAndUpdate(id, rest, {new: true})
         res.json({
             ok: true,
-            msg: 'Put Success - Controller',
-            id
+            user
         })
     }
 const usersPost = async (req, res=response)=>{
-
     const { nombre, correo, password, rol } = req.body;
     const user = new User({ nombre, correo, password, rol });
-
 
     // Encrypt of Password
     const salt = bcryptjs.genSaltSync();
@@ -36,16 +41,11 @@ const usersPost = async (req, res=response)=>{
                 ok:true,
                 user    
             })
-        }
+    }
 const usersDelete = (req, res = response) => {
         res.json({
             ok: true,
             msg: 'Delete Success - Controller'
         })
     }
-module.exports = { 
-        usersGet, 
-        usersPost,  
-        usersPut, 
-        usersDelete
-    }
+module.exports = { usersGet, usersPost, usersPut, usersDelete}

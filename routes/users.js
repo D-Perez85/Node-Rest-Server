@@ -4,14 +4,20 @@ const router = Router();
 
 //Controllers
 const { usersGet, usersPost, usersPut, usersDelete } = require('../controllers/users');
-const { validateFields,  } = require('../middlewares/validate-fields');
+const { validateFields} = require('../middlewares/validate-fields');
 
 //Helpers
-const { esRoleValid,emailExist} = require('../helpers/db-validators');
+const { esRoleValid,emailExist, existUserById} = require('../helpers/db-validators');
 
 //Endpoints
 router.get('/', usersGet); 
-router.put('/:id', usersPut); 
+router.put('/:id',[
+    check('id', 'No es un ID válido').isMongoId(),
+    check('id').custom( existUserById ),
+    check('rol').custom(esRoleValid),
+    validateFields
+],
+ usersPut); 
 
 router.post('/',[
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
