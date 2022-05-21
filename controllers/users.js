@@ -23,11 +23,6 @@ const usersPut = (req, res = response)=>{
     }
 const usersPost = async (req, res=response)=>{
 
-    const errors = validationResult(req); 
-    if(!errors.isEmpty()){
-        return res.status(404).json(errors)
-    }
-
     const { nombre, correo, password, rol } = req.body;
     const user = new User({ nombre, correo, password, rol });
 
