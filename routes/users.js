@@ -8,6 +8,7 @@ const { usersGet, usersPost, usersPut, usersDelete } = require('../controllers/u
 //Middlewares
 const { validateFields} = require('../middlewares/validate-fields');
 const { validateJWT } = require('../middlewares/validate-jwt');
+const { isAdminRole, hasRole } = require('../middlewares/validate-roles');
 
 //Helpers
 const { esRoleValid,emailExist, existUserById} = require('../helpers/db-validators');
@@ -34,6 +35,10 @@ router.post('/',[
 
 router.delete('/:id',[
     validateJWT,
+    // isAdminRole, 
+    /** isAdminRole is very strict, we need something more flexible. 
+     * I use hasRole to put there different options for the roles */
+    hasRole('ADMIN_ROLE', 'USER_ROLE'),
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom( existUserById ),
     validateFields
