@@ -15,15 +15,12 @@ const emailExist = async( correo = '' ) => {
         throw new Error(`El correo: ${ correo }, ya está registrado`);
     }
 }
-
 const existUserById = async( id ) => {
-
     // Verificar si el correo existe
     const existUser = await User.findById(id);
     if ( !existUser ) {
         throw new Error(`El id ${ id } no existe en BDD `);
     }
 }
-
 module.exports = { esRoleValid, emailExist, existUserById}
 

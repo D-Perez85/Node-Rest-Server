@@ -11,6 +11,7 @@ const { esRoleValid,emailExist, existUserById} = require('../helpers/db-validato
 
 //Endpoints
 router.get('/', usersGet); 
+
 router.put('/:id',[
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom( existUserById ),
