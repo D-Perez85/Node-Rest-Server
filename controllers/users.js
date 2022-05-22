@@ -44,11 +44,18 @@ const usersPost = async (req, res=response)=>{
     }
 const usersDelete = async (req, res = response) => {
         const {id} = req.params; 
-        const uid = req.uid; 
         //BAJA FISICA
-        // const user = await User.findByIdAndDelete(id); 
+        // const user = await User.findByIdAndDelete(id);        
         //BAJA LOGICA
         const user = await User.findByIdAndUpdate( id, { estado: false }, {new: true} );
-        res.json( {user, uid})
+
+        
+        const userAuth = req.user; 
+        const uid = req.uid; ;
+        res.json( {
+            user, 
+            userAuth,
+            uid
+        })
     }
 module.exports = { usersGet, usersPost, usersPut, usersDelete}
