@@ -13,7 +13,7 @@ Tiene también como funcionalidad retornar info a través de dichos endpoints, l
     - middlewares
     - endpoints
     - request & response
-    - deploy en un free serverLess como Heroku.
+    - pruebas en Postman
 
 
 ## Comenzando 🚀
@@ -33,8 +33,17 @@ Instala las dependencias necesarias para poder correr la App...
 ```
 npm install
 ```
+### `Configurar Database` 
+
+	o loguearse en MongoAtlas, crear proyecto y clúster (Database)
+	o configurar user y password (Database Access), agregarlas en .env del codigo fuente
+	o configurar los datos IP del clúster en 0.0.0.0/0 (config por default)
+	o elegir tipo de conexion (Mongo Compass), click en conexion, copiar srv de la misma
+	o agregar ese srv en .env, reemplazar user y password del mismo por los nuestros
+	o abrir Mongo Compas, ejecutar el srv en URI de conexión
+
 ### `Run`
-Una vez instaladas las dependencias podras correr la App con el comando npm start en el directorio del proyecto. 
+Una vez instaladas las dependencias podras correr la App en el directorio del proyecto. 
 Una vez compilado podras ver el resultado en http://localhost:8080/
 Si quieres cambiar el nro de puerto deberas configurar la variable PORT del archivo .env con el que desees. 
 ```
