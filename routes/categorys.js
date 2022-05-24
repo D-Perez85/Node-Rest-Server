@@ -5,7 +5,6 @@ const router = Router();
 /**
  * {{url}}/api/categorias
 */
-
 //Get of all categorys
 router.get('/', (req, res)=>{
     res.json({
@@ -19,7 +18,7 @@ router.get('/:id', (req, res)=>{
     })
 })
 //Create a category - private - any person can create with a valid token 
-router.post('/', (req, res)=>{
+router.post('/',(req, res)=>{
     res.json({
       msg: 'POST'
     })
