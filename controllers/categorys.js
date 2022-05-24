@@ -47,9 +47,14 @@ const categoryPut = async (req, res = response)=>{
     const {estado, user, ...data} = req.body; 
     data.nombre = data.nombre.toUpperCase(); 
     data.user = req.user._id; 
-
     const category = await Category.findByIdAndUpdate(id, data, {new: true})
         res.json(category)
     }
+//Low logic of a category - Only an admin role can do this
+const deleteCategory = async(req, res =response ) => {
+        const { id } = req.params;
+        const categoryDeleted = await Category.findByIdAndUpdate( id, { estado: false }, {new: true });
+            res.json( categoryDeleted );
+    }
 
-module.exports = {createCategory, getCategorys, getCategory, categoryPut}
+module.exports = {createCategory, getCategorys, getCategory, categoryPut, deleteCategory}
