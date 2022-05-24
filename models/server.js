@@ -6,9 +6,11 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
-    this.usersPath = "/api/users";
-    this.usersAuth = "/api/auth"; 
- 
+    this.paths = {
+      auth:      '/api/auth',
+      categorys: '/api/categorys',
+      users:     '/api/users',
+    }
     // DataBase conect
     this.conectDB();
     //Middlewares
@@ -19,7 +21,6 @@ class Server {
   async conectDB() {
     await dbConnection();
   }
-
   middlewares() {
     // Cors
     this.app.use(cors());
@@ -29,8 +30,9 @@ class Server {
     this.app.use(express.static("public"));
   }
   routes() {
-     this.app.use(this.usersAuth, require("../routes/auth")); 
-     this.app.use(this.usersPath, require("../routes/users"));
+     this.app.use(this.paths.auth, require("../routes/auth")); 
+     this.app.use(this.paths.categorys, require("../routes/categorys")); 
+     this.app.use(this.paths.users, require("../routes/users"));
   }
   listen() {
     this.app.listen(this.port, () => {
