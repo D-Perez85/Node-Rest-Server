@@ -1,4 +1,4 @@
-const { response } = require("express");
+const { response, request } = require("express");
 const {Category} = require("../models");
 
 // Get categorys with paginate  & user data
@@ -41,5 +41,15 @@ const createCategory = async (req, res = response) => {
     //Response
         res.status(201).json(category);
     }
+//Update a category by Id - anyone with a valid Token
+const categoryPut = async (req, res = response)=>{
+    const {id} = req.params; 
+    const {estado, user, ...data} = req.body; 
+    data.nombre = data.nombre.toUpperCase(); 
+    data.user = req.user._id; 
 
-module.exports = {createCategory, getCategorys, getCategory}
+    const category = await Category.findByIdAndUpdate(id, data, {new: true})
+        res.json(category)
+    }
+
+module.exports = {createCategory, getCategorys, getCategory, categoryPut}
