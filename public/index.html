@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso Denegado</title>
+    <title>NODE SERVER REST</title>
 </head>
 
 <body>
@@ -17,6 +17,8 @@
         data-shape="rectangular" data-logo_alignment="left">
     </div>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <br/>
+    <button id="google-signout"> SignOut </button>
     <script>
         function handleCredentialResponse(response) {
         //  Google Token
@@ -32,8 +34,19 @@
                 .then(resp => resp.json())
                 .then(resp=>{
                     console.log(resp);
+                    localStorage.setItem('correo', resp.user.correo)
                 })
                 .catch(console.warn)
+        }
+
+        const button = document.getElementById('google-signout'); 
+        button.onclick = ()=>{
+            console.log(google.accounts.id);
+            google.accounts.id.disableAutoSelect(); 
+            google.accounts.id.revoke(localStorage.getItem(' email'), done =>{
+                localStorage.clear(); 
+                location.reload(); 
+            }); 
         }
       </script>
 </body>
