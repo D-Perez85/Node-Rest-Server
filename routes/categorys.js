@@ -1,39 +1,41 @@
-const {Router} = require('express'); 
-const router = Router(); 
+const { Router} = require('express');
+const router = Router();
+const { check } = require('express-validator');
 
-//Endpoints
-/**
- * {{url}}/api/categorias
-*/
+//Controllers
+const { createCategory, getCategorys, getCategory } = require('../controllers/categorys');
+//Helpers
+const { existCategoryById } = require('../helpers/db-validators');
+//Middlewares
+const { validateJWT, validateFields} = require('../middlewares');
+
+/** {{url}}/api/categorias */
+
 //Get of all categorys
-router.get('/', (req, res)=>{
-    res.json({
-    msg: 'GET'
-    })
-})
-//Get of one category by ID
-router.get('/:id', (req, res)=>{
-    res.json({
-    msg: 'GET-ID'
-    })
-})
-//Create a category - private - any person can create with a valid token 
-router.post('/',(req, res)=>{
-    res.json({
-      msg: 'POST'
-    })
-})
-//Update - private - any person can make an update with a valid token 
-router.put('/:id', (req, res)=>{
-    res.json({
-      msg: 'PUT'
-    })
-})
-//Delete one category - Low Logic - Only by the Admin  
-router.delete('/:id', (req, res)=>{
-    res.json({
-      msg: 'DELETE'
-    })
-})
-module.exports = router; 
+router.get('/', getCategorys); 
 
+//Get of one category by ID
+router.get('/:id', [
+    check('id').custom(existCategoryById),
+    validateFields
+],getCategory); 
+
+//Create a category - private - any person can create with a valid token 
+router.post('/', [
+    validateJWT,
+    check('nombre', 'El nombre es required').notEmpty(),
+    validateFields
+], createCategory)
+
+router.put('/:id', (req, res) => {
+  res.json({
+    msg: 'PUT'
+  })
+})
+
+router.delete('/:id', (req, res) => {
+  res.json({
+    msg: 'DELETE'
+  })
+})
+module.exports = router;

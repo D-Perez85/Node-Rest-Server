@@ -3,17 +3,18 @@ const { Schema, model } = require('mongoose');
 const CategorySchema = Schema({
     nombre: {
         type: String,
-        required: [true, 'El nombre es obligatorio']
-    }, 
+        required: [true, 'El nombre es obligatorio'],
+        unique: true
+        }, 
     estado: {
         type: Boolean,
         default: true,
         required:  true
         },
     user: {
-        type: Schea.Types.ObjectId, 
-        ref: User,
+        type: Schema.Types.ObjectId, 
+        ref: 'User',
         required: true
         }
     });
-module.exports = model( 'category', CategorySchema );
+module.exports = model( 'Category', CategorySchema );
