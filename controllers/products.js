@@ -1,11 +1,30 @@
 const {response} = require('express'); 
+const {Product} = require('../models'); 
+
 // Create a new Product
-const createProduct = (req, res = response) => {
-    res.status(201).json({
-        ok: true,
-        msg: 'Product Created'
-    })
+const createProduct = async (req, res = response) => {
+    const { estado, user, ...body } = req.body;
+    // Match using findOne - Product Exist?
+    const productDB = await Product.findOne({ nombre: body.nombre });
+        if ( productDB ) {
+            return res.status(400).json({
+            msg: `El producto ${ productDB.nombre }, ya existe`
+            });
+        }
+    // Generate data to save
+    const data = {
+        ...body,
+        nombre: body.nombre.toUpperCase(),
+        user: req.user._id
+    }
+    //Create a new instance of Product - set of data
+    const product = new Product( data );
+    // Save at DB
+    await product.save();
+    //Response
+    res.status(201).json(product); 
 }
+
 // Get all the Products with paginate  & user data
 const getProducts = (req, res = response) => {
     res.status(200).json({
