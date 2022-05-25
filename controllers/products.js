@@ -49,12 +49,16 @@ const getProduct = async (req, res = response) => {
                             .populate('category', 'nombre');
     res.json( product );
 }
-//Update a Product by Id - anyone with a valid Token
-const productPut = (req, res = response) => {
-    res.status(200).json({
-        ok: true, 
-        msg: 'Update of one Product By Id Success'
-    })
+// Update a Product by Id - anyone with a valid Token
+const productPut = async (req, res = response) => {
+    const { id } = req.params;
+    const { estado, user, ...data } = req.body;
+        if( data.nombre ) {
+            data.nombre  = data.nombre.toUpperCase();
+        }
+    data.user = req.user._id;
+    const product = await Product.findByIdAndUpdate(id, data, { new: true });
+    res.json( product );
 }
 //Low logic of a Product - Only an admin role can do this
 const deleteProduct = (req, res = response) => {

@@ -31,7 +31,11 @@ router.post('/', [
 ], createProduct);
 
 // Modify a name of a product - any person can modify with a valid token 
-router.put('/:id', productPut);
+router.put('/:id',[
+    validateJWT,
+    check('id').custom( existProductById ),
+    validateFields
+], productPut);
 
 // Delete one product - Admin
 router.delete('/:id', deleteProduct);
