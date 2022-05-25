@@ -1,51 +1,24 @@
-const { response } = require('express');
 const { Router } = require('express');
-
 const router = Router();
 
-/**
- * {{url}}/api/products
- */
+//Controllers
+const { createProduct, getProducts, getProduct, productPut, deleteProduct } = require('../controllers/products');
+
+/**  {{url}}/api/products  */
 
 // Get all products - public
-router.get('/', (req, res = response) =>{
-    res.json({
-        ok: true,
-        msg: 'Succes Get of products'
-    })
-});
+router.get('/', getProducts);
 
 // Get of one product by Id - public
-router.get('/:id', (req, res = response) =>{
-    res.json({
-        ok: true,
-        msg: 'Succes Get of product by Id'
-    })
-});
+router.get('/:id', getProduct);
 
-//Create a product - private - any person can create with a valid token 
-router.post('/', (req, res = response)=>{
-    res.json({
-        ok: true, 
-        msg: 'Succes Post of product'
-    })
-});
+// Create a product - private - any person can create with a valid token 
+router.post('/', createProduct);
 
-//Modify a name of a category - any person can modify with a valid token 
-router.put('/:id', (req, res=response) =>{
-    res.json({
-        ok: true,
-        msg: 'Succes Put of product'
-
-    })
-});
+// Modify a name of a category - any person can modify with a valid token 
+router.put('/:id', productPut);
 
 // Delete one category - Admin
-router.delete('/:id', (req, res)=>{
-    res.json({
-        ok: true,
-        msg: 'Succes Delete of product'
+router.delete('/:id', deleteProduct);
 
-    })
-});
 module.exports = router;
