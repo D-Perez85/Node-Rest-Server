@@ -7,12 +7,24 @@ const uploadFiles = async(req, res = response) => {
         return; 
     }
     const {file} = req.files; 
-    const uploadPath = path.join( __dirname, '../uploads/', file.name); 
-    file.mv(uploadPath, (err)=>{
-        if(err){
-            return res.status(500).json({err});
-        }
-        res.json({ msg: 'File Uploaded to ' + uploadPath})
-    });
+    const nameAbreviate = file.name.split('.'); 
+    const extension = nameAbreviate[nameAbreviate.length - 1]; 
+
+    //Extension Validate
+    const validateExtensions = ['png', 'jpeg', 'jpg', 'gif']; 
+    if(!validateExtensions.includes(extension)){
+        return res.status(400).json({
+            msg: `Extension ${extension} invalida - Pruebe con: ${validateExtensions}`
+        })
+    } 
+    res.json({extension})
+
+    // const uploadPath = path.join( __dirname, '../uploads/', file.name); 
+    // file.mv(uploadPath, (err)=>{
+    //     if(err){
+    //         return res.status(500).json({err});
+    //     }
+    //     res.json({ msg: 'File Uploaded to ' + uploadPath})
+    // });
 }
 module.exports = { uploadFiles}
