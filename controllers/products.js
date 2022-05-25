@@ -61,11 +61,10 @@ const productPut = async (req, res = response) => {
     res.json( product );
 }
 //Low logic of a Product - Only an admin role can do this
-const deleteProduct = (req, res = response) => {
-    res.status(200).json({
-        ok: true, 
-        msg: 'Delete of one Product By Id Success'
-    })
+const deleteProduct = async (req, res = response) => {
+    const { id } = req.params;
+    const productDeleted = await Product.findByIdAndUpdate( id, { estado: false }, {new: true });
+    res.json( productDeleted );
 }
 module.exports = {createProduct, getProducts, getProduct, productPut, deleteProduct}
 

@@ -7,7 +7,7 @@ const { createProduct, getProducts, getProduct, productPut, deleteProduct } = re
 //Helpers
 const { existCategoryById, existProductById } = require('../helpers/db-validators');
 //Middlewares
-const { validateFields, validateJWT } = require('../middlewares');
+const { validateFields, validateJWT, isAdminRole } = require('../middlewares');
 
 /**  {{url}}/api/products  */
 
@@ -38,6 +38,12 @@ router.put('/:id',[
 ], productPut);
 
 // Delete one product - Admin
-router.delete('/:id', deleteProduct);
+router.delete('/:id', [
+    validateJWT,
+    isAdminRole,
+    check('id', 'No es un id de Mongo válido').isMongoId(),
+    check('id').custom( existProductById ),
+    validateFields,
+], deleteProduct);
 
 module.exports = router;
