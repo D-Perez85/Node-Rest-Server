@@ -1,6 +1,4 @@
-const { Category } = require('../models');
-const Role = require('../models/role');
-const User = require('../models/user');
+const { Role, User, Category, Product } = require('../models');
 
 const esRoleValid = async(rol = '') => {
     //IS THE ROL EXIST
@@ -23,7 +21,6 @@ const existUserById = async( id ) => {
             throw new Error(`El id ${ id } no existe en BDD `);
         }
     }
-
 const existCategoryById = async (id) =>{
     //IS THE CATEGORY EXIST
     const existCategory = await Category.findById(id); 
@@ -31,6 +28,12 @@ const existCategoryById = async (id) =>{
             throw new Error(`El id ${id} no existe en BDD`)
         }
     }
-
-module.exports = { esRoleValid, emailExist, existUserById, existCategoryById}
+const existProductById = async( id ) => {
+    // IS THE PRODUCT EXIST
+    const existProduct = await Product.findById(id);
+    if ( !existProduct ) {
+        throw new Error(`El id no existe ${ id }`);
+    }
+}
+module.exports = { esRoleValid, emailExist, existUserById, existCategoryById, existProductById}
 

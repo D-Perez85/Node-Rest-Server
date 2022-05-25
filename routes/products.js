@@ -5,7 +5,7 @@ const router = Router();
 //Controllers
 const { createProduct, getProducts, getProduct, productPut, deleteProduct } = require('../controllers/products');
 //Helpers
-const { existCategoryById } = require('../helpers/db-validators');
+const { existCategoryById, existProductById } = require('../helpers/db-validators');
 //Middlewares
 const { validateFields, validateJWT } = require('../middlewares');
 
@@ -15,7 +15,11 @@ const { validateFields, validateJWT } = require('../middlewares');
 router.get('/', getProducts);
 
 // Get of one product by Id - public
-router.get('/:id', getProduct);
+router.get('/:id',[
+    check('id', 'No es un id de Mongo válido').isMongoId(),
+    check('id').custom( existProductById),
+    validateFields,
+], getProduct);
 
 // Create a product - private - any person can create with a valid token 
 router.post('/', [ 
@@ -26,10 +30,10 @@ router.post('/', [
     validateFields
 ], createProduct);
 
-// Modify a name of a category - any person can modify with a valid token 
+// Modify a name of a product - any person can modify with a valid token 
 router.put('/:id', productPut);
 
-// Delete one category - Admin
+// Delete one product - Admin
 router.delete('/:id', deleteProduct);
 
 module.exports = router;
