@@ -7,8 +7,12 @@ const uploadFiles = async(req, res = response) => {
         res.status(400).json({msg: 'No hay archivos para subir'}); 
         return; 
     }
-//Images
-const name = await loadFile(req.files );
-res.json({name })
+    try {
+        // const name = await loadFile(req.files, ['txt', 'md'], 'texts' );
+        const name = await loadFile(req.files, undefined, 'imgs' );
+        res.json({ name });
+    } catch (msg) {
+        res.status(400).json({ msg });
+    }
 }
 module.exports = { uploadFiles}
