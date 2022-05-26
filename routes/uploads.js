@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 
 //Controllers
-const { uploadFiles, updateImage} = require('../controllers/uploads');
+const { uploadFiles, updateImage, showImage} = require('../controllers/uploads');
 //Helpers
 const { allowedColecctions } = require('../helpers');
 //Middlewares
@@ -18,5 +18,11 @@ router.put('/:colecction/:id', [
     check('colecction').custom( c => allowedColecctions( c, ['users','products'] ) ),
     validateFields
 ], updateImage); 
+
+router.get('/:colecction/:id', [
+    check('id','El id debe de ser de mongo').isMongoId(),
+    check('colecction').custom( c => allowedColecctions( c, ['users','products'] ) ),
+    validateFields
+], showImage  )
 
 module.exports = router;
