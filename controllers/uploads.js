@@ -1,5 +1,8 @@
+const path = require('path');
+const fs   = require('fs');
 const { response } = require('express');
-//Helper
+
+//Helpers
 const { loadFile } = require('../helpers');
 //Models
 const {User, Product} = require('../models'); 
@@ -37,6 +40,15 @@ const updateImage = async(req, res = response ) => {
         default:
             return res.status(500).json({ msg: 'Se me olvidó validar esto'});
     }
+    // Clean previous images
+    if ( modelo.img ) {
+        // We must delete the image from the server
+        const pathImage = path.join( __dirname, '../uploads', colecction, modelo.img );
+        if ( fs.existsSync( pathImage ) ) {
+            fs.unlinkSync( pathImage );
+        }
+    }
+
 
     const name = await loadFile( req.files, undefined, colecction );
     modelo.img = name;
