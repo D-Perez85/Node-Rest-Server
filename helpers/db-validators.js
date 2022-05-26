@@ -35,5 +35,14 @@ const existProductById = async( id ) => {
         throw new Error(`El id no existe ${ id }`);
     }
 }
-module.exports = { esRoleValid, emailExist, existUserById, existCategoryById, existProductById}
+
+const allowedColecctions = ( colecction = '', colecctions = []) => {
+    // IS THE COLECCTION ALLOWED
+    const included = colecctions.includes( colecction );
+    if ( !included ) {
+        throw new Error(`La colección ${ colecction } no es permitida, ${ colecctions }`);
+    }
+    return true;
+}
+module.exports = { esRoleValid, emailExist, existUserById, existCategoryById, existProductById, allowedColecctions}
 
