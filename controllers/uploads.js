@@ -1,6 +1,8 @@
 const path = require('path');
 const fs   = require('fs');
 const { response } = require('express');
+const cloudinary = require('cloudinary').v2
+cloudinary.config( process.env.CLOUDINARY_URL );
 
 //Helpers
 const { loadFile } = require('../helpers');
@@ -56,6 +58,44 @@ const updateImage = async(req, res = response ) => {
     res.json( modelo );
 }
 
+const updateImageCloudinary = async(req, res = response ) => {
+    const { id, colecction } = req.params;
+    let modelo;
+    switch ( colecction ) {
+        case 'users':
+            modelo = await User.findById(id);
+            if ( !modelo ) {
+                return res.status(400).json({
+                    msg: `No existe un usuario con el id ${ id }`
+                });
+            }       
+        break;
+        case 'products':
+            modelo = await Product.findById(id);
+            if ( !modelo ) {
+                return res.status(400).json({
+                    msg: `No existe un producto con el id ${ id }`
+                });
+            }
+        break;
+        default:
+            return res.status(500).json({ msg: 'Se me olvidó validar esto'});
+    }
+    // Clean previous images
+    if ( modelo.img ) {
+        // We must delete the image from the server
+        const nameArr = modelo.img.split('/');
+        const name    = nameArr[ nameArr.length - 1 ];
+        const [ public_id ] = name.split('.');
+        cloudinary.uploader.destroy( public_id );
+    }
+    const { tempFilePath } = req.files.file
+    const {secure_url} = await cloudinary.uploader.upload(tempFilePath); 
+    modelo.img = secure_url;
+    await modelo.save();
+    res.json( modelo );
+}
+
 const showImage = async(req, res = response ) => {
     const { id, colecction } = req.params;
     let modelo;
@@ -90,4 +130,4 @@ const showImage = async(req, res = response ) => {
     const pathImage = path.join( __dirname, '../assets/no-image.jpg');
         res.sendFile( pathImage );
 }
-module.exports = { uploadFiles, updateImage, showImage}
+module.exports = { uploadFiles, updateImage, showImage, updateImageCloudinary}
